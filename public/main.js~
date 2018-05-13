@@ -1,0 +1,13 @@
+$(document).ready( function(){
+   
+    $('#slider-res-label').text( $('#slider-res').val() + " dpi");
+    
+    $('#slider-res').on('input' ,function (){
+	$('#slider-res-label').text( $('#slider-res').val() + " dpi");
+    });
+
+    $('#submit').click(function (){
+	$.post( '/' , { res: $('#slider-res').val(),
+		        mode: $("input[name='mode']:checked").val() } );
+    });
+});

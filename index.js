@@ -5,12 +5,13 @@ const fs = require('fs');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
-
-const target = __dirname + "/untitled.jpeg";
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true}));
+
 const scanArgs = ["--format=jpeg" ];
+const download_name = "unititled.jpeg"
+const target = "/tmp/" + download_name;
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
@@ -28,20 +29,12 @@ app.get('/submit', (req, res) => {
 	console.log("scanning!");
     });
     scan.stdout.on('end', () => {
-	res.download('untitled.jpeg');
-	//res.redirect('/download');
+	res.download(target);
     });
     scan.stderr.on('data', (err) =>{
 	console.log(err);
 	res.send(`<p>${err}</p>`);
     });
-});
-app.get('/download', (req, res) => {
-    res.setHeader('Content-disposition', 'attachment; filename=unititled.jpeg');
-    res.end();
-    //res.download(target);
-    console.log("file downloaded!");
-    //res.end();
 });
 
 const port = process.env.PORT || 3000;
